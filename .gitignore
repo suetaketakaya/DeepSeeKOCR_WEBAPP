@@ -1,0 +1,27 @@
+# モデルファイル（サイズが大きいため）
+models/
+
+# 出力ファイル
+output/
+
+# 一時ファイル
+temp_input_image.png
+*.pyc
+__pycache__/
+
+# Python環境
+venv/
+env/
+*.egg-info/
+
+# IDEの設定
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# その他
+*.log
