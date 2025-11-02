@@ -247,8 +247,60 @@ def process_image_gradio(image, task, crop_mode):
             except:
                 pass
 
+# Google AdSense設定（環境変数から取得）
+ADSENSE_CLIENT_ID = os.environ.get("ADSENSE_CLIENT_ID", "")
+ADSENSE_SLOT_TOP = os.environ.get("ADSENSE_SLOT_TOP", "")
+ADSENSE_SLOT_BOTTOM = os.environ.get("ADSENSE_SLOT_BOTTOM", "")
+
+# AdSense広告HTML（設定されている場合のみ表示）
+def get_adsense_top():
+    if ADSENSE_CLIENT_ID and ADSENSE_SLOT_TOP:
+        return f"""
+        <div class="adsense-banner-top" style="text-align: center; margin: 20px 0;">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-{ADSENSE_CLIENT_ID}"
+               data-ad-slot="{ADSENSE_SLOT_TOP}"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({{}});
+          </script>
+        </div>
+        """
+    return ""
+
+def get_adsense_bottom():
+    if ADSENSE_CLIENT_ID and ADSENSE_SLOT_BOTTOM:
+        return f"""
+        <div class="adsense-banner-bottom" style="text-align: center; margin: 20px 0;">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-{ADSENSE_CLIENT_ID}"
+               data-ad-slot="{ADSENSE_SLOT_BOTTOM}"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({{}});
+          </script>
+        </div>
+        """
+    return ""
+
+def get_adsense_script():
+    if ADSENSE_CLIENT_ID:
+        return f"""
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-{ADSENSE_CLIENT_ID}"
+             crossorigin="anonymous"></script>
+        """
+    return ""
+
 # Gradioインターフェースの作成
-with gr.Blocks(title="DeepSeek-OCR Chat Tool") as demo:
+with gr.Blocks(title="DeepSeek-OCR Chat Tool", head=get_adsense_script()) as demo:
+    # トップバナー広告
+    if get_adsense_top():
+        gr.HTML(get_adsense_top())
+
     gr.Markdown(
         """
         # DeepSeek-OCR チャットツール
@@ -314,6 +366,12 @@ with gr.Blocks(title="DeepSeek-OCR Chat Tool") as demo:
         outputs=[output_text, output_image]
     )
 
+    # ボトムバナー広告
+    if get_adsense_bottom():
+        gr.HTML(get_adsense_bottom())
+
 if __name__ == "__main__":
-    demo.launch(share=False, server_name="0.0.0.0", server_port=7860)
+    # Cloud Run環境ではPORT環境変数を使用
+    port = int(os.environ.get("PORT", 7860))
+    demo.launch(share=False, server_name="0.0.0.0", server_port=port)
 

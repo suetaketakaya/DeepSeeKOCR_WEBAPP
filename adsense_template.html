@@ -1,0 +1,67 @@
+<!-- Google AdSense 広告コード テンプレート -->
+<!--
+  使い方:
+  1. Google AdSenseアカウントを作成: https://www.google.com/adsense/
+  2. サイトを追加して承認を受ける
+  3. 広告ユニットを作成
+  4. 以下の YOUR_ADSENSE_CLIENT_ID と YOUR_ADSENSE_SLOT_ID を実際の値に置き換える
+-->
+
+<!-- AdSense ヘッダースクリプト -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_ADSENSE_CLIENT_ID"
+     crossorigin="anonymous"></script>
+
+<!-- トップバナー広告 (レスポンシブ) -->
+<div class="adsense-banner-top" style="text-align: center; margin: 20px 0;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-YOUR_ADSENSE_CLIENT_ID"
+       data-ad-slot="YOUR_ADSENSE_SLOT_ID_TOP"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- サイドバー広告（オプション） -->
+<div class="adsense-sidebar" style="margin: 20px 0;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-YOUR_ADSENSE_CLIENT_ID"
+       data-ad-slot="YOUR_ADSENSE_SLOT_ID_SIDEBAR"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- ボトムバナー広告 -->
+<div class="adsense-banner-bottom" style="text-align: center; margin: 20px 0;">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-YOUR_ADSENSE_CLIENT_ID"
+       data-ad-slot="YOUR_ADSENSE_SLOT_ID_BOTTOM"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>
+       (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</div>
+
+<!-- カスタムCSS -->
+<style>
+  .adsense-banner-top,
+  .adsense-banner-bottom,
+  .adsense-sidebar {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .adsense-sidebar {
+      display: none; /* モバイルではサイドバー広告を非表示 */
+    }
+  }
+</style>

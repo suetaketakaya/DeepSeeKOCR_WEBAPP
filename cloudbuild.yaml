@@ -1,0 +1,59 @@
+# Cloud Build設定ファイル - DeepSeek-OCR Gradioアプリのビルドとデプロイ
+
+steps:
+  # ステップ1: Dockerイメージをビルド
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/deepseek-ocr-webapp:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/deepseek-ocr-webapp:latest'
+      - '.'
+
+  # ステップ2: イメージをContainer Registryにプッシュ
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/deepseek-ocr-webapp:$COMMIT_SHA'
+
+  # ステップ3: Cloud Runにデプロイ
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'deepseek-ocr-webapp'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/deepseek-ocr-webapp:$COMMIT_SHA'
+      - '--region'
+      - 'asia-northeast1'  # 東京リージョン（必要に応じて変更）
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'  # 認証なしでアクセス可能
+      - '--memory'
+      - '4Gi'  # メモリを4GBに設定（モデルサイズに応じて調整）
+      - '--cpu'
+      - '2'  # CPU 2コア
+      - '--timeout'
+      - '600'  # タイムアウト10分
+      - '--max-instances'
+      - '10'  # 最大インスタンス数
+      - '--set-env-vars'
+      - 'PORT=8080,ADSENSE_CLIENT_ID=${_ADSENSE_CLIENT_ID},ADSENSE_SLOT_TOP=${_ADSENSE_SLOT_TOP},ADSENSE_SLOT_BOTTOM=${_ADSENSE_SLOT_BOTTOM}'
+
+# ビルド成果物の保存先
+images:
+  - 'gcr.io/$PROJECT_ID/deepseek-ocr-webapp:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/deepseek-ocr-webapp:latest'
+
+# ビルドオプション
+options:
+  machineType: 'E2_HIGHCPU_8'  # ビルド用のマシンタイプ
+  timeout: '1800s'  # ビルドタイムアウト30分
+
+# 置換変数（デプロイ時に指定）
+substitutions:
+  _ADSENSE_CLIENT_ID: ''  # デプロイ時に指定
+  _ADSENSE_SLOT_TOP: ''
+  _ADSENSE_SLOT_BOTTOM: ''

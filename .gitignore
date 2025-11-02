@@ -19,9 +19,16 @@ env/
 .idea/
 *.swp
 *.swo
+.claude/
 
 # macOS
 .DS_Store
 
 # その他
 *.log
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log

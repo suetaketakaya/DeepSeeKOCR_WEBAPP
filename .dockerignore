@@ -1,0 +1,60 @@
+# Git関連
+.git
+.gitignore
+
+# Python関連
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE関連
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.claude/
+
+# ドキュメント・記事
+*.md
+!README.md
+
+# テスト画像
+test.png
+
+# 出力ディレクトリ（本番では動的に生成）
+output/
+
+# モデル（Hugging Faceから動的にダウンロード）
+models/
+
+# Firebase関連
+.firebase/
+.firebaserc
+firebase.json
+
+# macOS
+.DS_Store
+
+# その他
+*.log
