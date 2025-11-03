@@ -4,6 +4,7 @@ accelerate
 sentencepiece
 Pillow
 addict
+easydict
 matplotlib
 torchvision
 einops
