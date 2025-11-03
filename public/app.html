@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DeepSeek-OCR - 高精度な光学文字認識（OCR）とMarkdown変換を無料で提供するWebアプリケーション">
+    <meta name="keywords" content="OCR, 文字認識, Markdown変換, DeepSeek, AI, 画像認識, 無料OCR">
+    <title>DeepSeek-OCR - 無料OCRツール</title>
+
+    <!-- Google AdSense スクリプト - 審査承認後に追加 -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_CLIENT_ID"
+         crossorigin="anonymous"></script> -->
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+        }
+
+        /* トップバナー広告 */
+        .ad-banner-top {
+            background: #fff;
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ad-banner-top p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* アプリコンテナ */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* iframe コンテナ */
+        .iframe-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ローディング画面 */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 1000;
+            transition: opacity 0.5s;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        /* ヘッダー */
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .app-header h1 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .app-header .links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.9em;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .app-header .links a:hover {
+            border-bottom-color: white;
+        }
+
+        /* モバイル対応 */
+        @media (max-width: 768px) {
+            .app-header h1 {
+                font-size: 1.2em;
+            }
+
+            .app-header .links a {
+                margin-left: 10px;
+                font-size: 0.8em;
+            }
+
+            .ad-banner-top {
+                min-height: 60px;
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- ヘッダー -->
+        <div class="app-header">
+            <h1>📖 DeepSeek-OCR</h1>
+            <div class="links">
+                <a href="/" target="_self">ホーム</a>
+                <a href="https://github.com/suetaketakaya/DeepSeeKOCR_WEBAPP" target="_blank">GitHub</a>
+            </div>
+        </div>
+
+        <!-- トップ広告バナー -->
+        <div class="ad-banner-top">
+            <!-- AdSense広告コードをここに追加 -->
+            <p>広告スペース（AdSense承認後に表示されます）</p>
+        </div>
+
+        <!-- アプリ本体 (iframe) -->
+        <div class="iframe-container">
+            <!-- ローディング画面 -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loader"></div>
+                <div class="loading-text">DeepSeek-OCR を読み込んでいます...</div>
+                <p style="margin-top: 10px; opacity: 0.8; font-size: 0.9em;">初回起動時は数分かかる場合があります</p>
+            </div>
+
+            <!-- Hugging Face Space iframe -->
+            <iframe
+                src="https://takaya1029-deepseekocr-forwebapp.hf.space"
+                id="appIframe"
+                allow="accelerometer; ambient-light-sensor; autoplay; battery; camera; clipboard-read; clipboard-write; display-capture; document-domain; encrypted-media; execution-while-not-rendered; execution-while-out-of-viewport; fullscreen; geolocation; gyroscope; layout-animations; legacy-image-formats; magnetometer; microphone; midi; navigation-override; oversized-images; payment; picture-in-picture; publickey-credentials-get; speaker-selection; sync-xhr; unoptimized-images; unsized-media; usb; vr; wake-lock; screen-wake-lock; web-share; xr-spatial-tracking"
+                sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-downloads">
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        // iframeが読み込まれたらローディング画面を非表示
+        const iframe = document.getElementById('appIframe');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        iframe.addEventListener('load', function() {
+            setTimeout(function() {
+                loadingOverlay.classList.add('hidden');
+            }, 1000);
+        });
+
+        // タイムアウト処理（30秒後に強制的にローディングを非表示）
+        setTimeout(function() {
+            loadingOverlay.classList.add('hidden');
+        }, 30000);
+    </script>
+</body>
+</html>
