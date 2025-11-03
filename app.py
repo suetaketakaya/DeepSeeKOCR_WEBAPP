@@ -57,18 +57,43 @@ model_exists = os.path.exists(f'{LOCAL_MODEL_DIR}/config.json')
 
 if model_exists:
     print(f"ローカルモデルを読み込んでいます: {LOCAL_MODEL_DIR}")
+
+    # デバッグ: ファイル構造を確認
+    import os
+    print(f"モデルディレクトリの内容:")
+    for file in os.listdir(LOCAL_MODEL_DIR):
+        file_path = os.path.join(LOCAL_MODEL_DIR, file)
+        print(f"  - {file} ({os.path.getsize(file_path)} bytes)")
+
     try:
+        print("AutoTokenizer.from_pretrained を試行中...")
         tokenizer = AutoTokenizer.from_pretrained(
             LOCAL_MODEL_DIR,
             trust_remote_code=True,
             use_fast=False
         )
+        print("AutoTokenizer の読み込みに成功しました")
     except Exception as e:
-        print(f"Fastトークナイザーでエラー発生、スロートークナイザーを試行中: {e}")
-        tokenizer = LlamaTokenizer.from_pretrained(
-            LOCAL_MODEL_DIR,
-            trust_remote_code=True
-        )
+        print(f"AutoTokenizer でエラー発生: {type(e).__name__}: {e}")
+        print(f"LlamaTokenizer を試行中...")
+
+        # vocab_fileを明示的に指定
+        import os
+        vocab_file = os.path.join(LOCAL_MODEL_DIR, "tokenizer.model")
+        print(f"vocab_file パス: {vocab_file}")
+        print(f"vocab_file 存在確認: {os.path.exists(vocab_file)}")
+        print(f"vocab_file タイプ: {type(vocab_file)}")
+
+        try:
+            tokenizer = LlamaTokenizer.from_pretrained(
+                LOCAL_MODEL_DIR,
+                trust_remote_code=True,
+                vocab_file=vocab_file if os.path.exists(vocab_file) else None
+            )
+            print("LlamaTokenizer の読み込みに成功しました")
+        except Exception as e2:
+            print(f"LlamaTokenizer でもエラー発生: {type(e2).__name__}: {e2}")
+            raise
     model = AutoModel.from_pretrained(
         LOCAL_MODEL_DIR,
         trust_remote_code=True,
@@ -78,17 +103,26 @@ if model_exists:
 else:
     print(f"Hugging Faceからモデルをダウンロードしています: {model_name}")
     try:
+        print("AutoTokenizer.from_pretrained を試行中...")
         tokenizer = AutoTokenizer.from_pretrained(
             model_name,
             trust_remote_code=True,
             use_fast=False
         )
+        print("AutoTokenizer の読み込みに成功しました")
     except Exception as e:
-        print(f"Fastトークナイザーでエラー発生、スロートークナイザーを試行中: {e}")
-        tokenizer = LlamaTokenizer.from_pretrained(
-            model_name,
-            trust_remote_code=True
-        )
+        print(f"AutoTokenizer でエラー発生: {type(e).__name__}: {e}")
+        print(f"LlamaTokenizer を試行中...")
+
+        try:
+            tokenizer = LlamaTokenizer.from_pretrained(
+                model_name,
+                trust_remote_code=True
+            )
+            print("LlamaTokenizer の読み込みに成功しました")
+        except Exception as e2:
+            print(f"LlamaTokenizer でもエラー発生: {type(e2).__name__}: {e2}")
+            raise
     model = AutoModel.from_pretrained(
         model_name,
         trust_remote_code=True,
