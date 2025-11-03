@@ -1,4 +1,4 @@
-from transformers import AutoModel, AutoTokenizer
+from transformers import AutoModel, AutoTokenizer, LlamaTokenizer
 import torch
 import os
 import gradio as gr
@@ -6,6 +6,7 @@ from pathlib import Path
 
 # Fastトークナイザーを無効化（tokenizer.json互換性問題の回避）
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
+os.environ["TRANSFORMERS_NO_ADVISORY_WARNINGS"] = "1"
 
 # ローカルモデル保存先
 LOCAL_MODEL_DIR = './models/deepseek-ocr'
@@ -56,11 +57,18 @@ model_exists = os.path.exists(f'{LOCAL_MODEL_DIR}/config.json')
 
 if model_exists:
     print(f"ローカルモデルを読み込んでいます: {LOCAL_MODEL_DIR}")
-    tokenizer = AutoTokenizer.from_pretrained(
-        LOCAL_MODEL_DIR,
-        trust_remote_code=True,
-        use_fast=False
-    )
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(
+            LOCAL_MODEL_DIR,
+            trust_remote_code=True,
+            use_fast=False
+        )
+    except Exception as e:
+        print(f"Fastトークナイザーでエラー発生、スロートークナイザーを試行中: {e}")
+        tokenizer = LlamaTokenizer.from_pretrained(
+            LOCAL_MODEL_DIR,
+            trust_remote_code=True
+        )
     model = AutoModel.from_pretrained(
         LOCAL_MODEL_DIR,
         trust_remote_code=True,
@@ -69,11 +77,18 @@ if model_exists:
     )
 else:
     print(f"Hugging Faceからモデルをダウンロードしています: {model_name}")
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_name,
-        trust_remote_code=True,
-        use_fast=False
-    )
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(
+            model_name,
+            trust_remote_code=True,
+            use_fast=False
+        )
+    except Exception as e:
+        print(f"Fastトークナイザーでエラー発生、スロートークナイザーを試行中: {e}")
+        tokenizer = LlamaTokenizer.from_pretrained(
+            model_name,
+            trust_remote_code=True
+        )
     model = AutoModel.from_pretrained(
         model_name,
         trust_remote_code=True,
