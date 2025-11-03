@@ -69,8 +69,7 @@ if model_exists:
         print("AutoTokenizer.from_pretrained を試行中...")
         tokenizer = AutoTokenizer.from_pretrained(
             LOCAL_MODEL_DIR,
-            trust_remote_code=True,
-            use_fast=False
+            trust_remote_code=True
         )
         print("AutoTokenizer の読み込みに成功しました")
     except Exception as e:
@@ -98,7 +97,8 @@ if model_exists:
         LOCAL_MODEL_DIR,
         trust_remote_code=True,
         use_safetensors=True,
-        torch_dtype=torch.float32 if not torch.cuda.is_available() else torch.bfloat16
+        torch_dtype=torch.float32 if not torch.cuda.is_available() else torch.bfloat16,
+        attn_implementation='eager'  # FlashAttention2を無効化（CPU環境でも動作）
     )
 else:
     print(f"Hugging Faceからモデルをダウンロードしています: {model_name}")
@@ -106,8 +106,7 @@ else:
         print("AutoTokenizer.from_pretrained を試行中...")
         tokenizer = AutoTokenizer.from_pretrained(
             model_name,
-            trust_remote_code=True,
-            use_fast=False
+            trust_remote_code=True
         )
         print("AutoTokenizer の読み込みに成功しました")
     except Exception as e:
@@ -127,7 +126,8 @@ else:
         model_name,
         trust_remote_code=True,
         use_safetensors=True,
-        torch_dtype=torch.float32 if not torch.cuda.is_available() else torch.bfloat16
+        torch_dtype=torch.float32 if not torch.cuda.is_available() else torch.bfloat16,
+        attn_implementation='eager'  # FlashAttention2を無効化（CPU環境でも動作）
     )
     
     print("モデルをローカルに保存しています...")

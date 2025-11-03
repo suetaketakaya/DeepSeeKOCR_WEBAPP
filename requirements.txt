@@ -1,5 +1,6 @@
-torch
-transformers==4.37.2
+torch>=2.6.0
+transformers==4.46.3
+tokenizers==0.20.3
 accelerate
 sentencepiece
 Pillow
@@ -9,4 +10,5 @@ matplotlib
 torchvision
 einops
 timm
+gradio
 
