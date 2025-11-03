@@ -4,6 +4,9 @@ import os
 import gradio as gr
 from pathlib import Path
 
+# Fastトークナイザーを無効化（tokenizer.json互換性問題の回避）
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 # ローカルモデル保存先
 LOCAL_MODEL_DIR = './models/deepseek-ocr'
 model_name = 'deepseek-ai/DeepSeek-OCR'
