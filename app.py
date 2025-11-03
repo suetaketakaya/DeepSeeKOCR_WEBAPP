@@ -55,7 +55,8 @@ if model_exists:
     print(f"ローカルモデルを読み込んでいます: {LOCAL_MODEL_DIR}")
     tokenizer = AutoTokenizer.from_pretrained(
         LOCAL_MODEL_DIR,
-        trust_remote_code=True
+        trust_remote_code=True,
+        use_fast=False
     )
     model = AutoModel.from_pretrained(
         LOCAL_MODEL_DIR,
@@ -67,7 +68,8 @@ else:
     print(f"Hugging Faceからモデルをダウンロードしています: {model_name}")
     tokenizer = AutoTokenizer.from_pretrained(
         model_name,
-        trust_remote_code=True
+        trust_remote_code=True,
+        use_fast=False
     )
     model = AutoModel.from_pretrained(
         model_name,
