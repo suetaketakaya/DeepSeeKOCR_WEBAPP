@@ -6,22 +6,13 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [
-      {
-        "source": "**",
-        "run": {
-          "serviceId": "deepseek-ocr-webapp",
-          "region": "asia-northeast1"
-        }
-      }
-    ],
     "headers": [
       {
         "source": "**",
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "no-cache, no-store, must-revalidate"
+            "value": "public, max-age=3600"
           },
           {
             "key": "X-Content-Type-Options",

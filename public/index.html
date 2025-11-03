@@ -3,60 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeepSeek-OCR Webapp - Loading...</title>
+    <meta name="description" content="DeepSeek-OCR - 高精度な光学文字認識（OCR）とMarkdown変換を提供する無料Webアプリケーション">
+    <meta name="keywords" content="OCR, 文字認識, Markdown変換, DeepSeek, AI, 画像認識">
+    <title>DeepSeek-OCR Webapp - 高精度OCRツール</title>
+
+    <!-- Google AdSense スクリプト - 取得後に追加 -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_CLIENT_ID"
+         crossorigin="anonymous"></script> -->
+
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
             color: white;
         }
-        .container {
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .ad-banner {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
             text-align: center;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
         }
-        .loader {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #667eea;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+
+        .main-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin: 40px 0;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 20px 10px;
         }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
-        p {
-            font-size: 1.2em;
-            opacity: 0.9;
+
+        .cta-button.secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .how-to-use {
+            margin: 40px 0;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .how-to-use ol {
+            margin-left: 30px;
+            font-size: 1.1em;
+        }
+
+        .how-to-use li {
+            margin: 15px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+        }
+
+        .github-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            border-bottom: 2px solid white;
+            padding-bottom: 2px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .cta-button {
+                padding: 15px 30px;
+                font-size: 1.1em;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="loader"></div>
-        <h1>DeepSeek-OCR Webapp</h1>
-        <p>アプリケーションを読み込んでいます...</p>
-        <p style="font-size: 0.9em; margin-top: 20px;">
-            Cloud Runにリダイレクトしています
-        </p>
+        <header>
+            <h1>🚀 DeepSeek-OCR Webapp</h1>
+            <p>高精度な光学文字認識（OCR）とMarkdown変換を提供</p>
+        </header>
+
+        <!-- トップ広告バナー -->
+        <div class="ad-banner">
+            <!-- AdSense広告コードをここに追加 -->
+            <p style="opacity: 0.7;">広告スペース（AdSense承認後に表示されます）</p>
+        </div>
+
+        <div class="main-content">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="font-size: 2em; margin-bottom: 20px; color: #667eea;">今すぐ無料で使う</h2>
+                <a href="https://huggingface.co/spaces/YOUR_USERNAME/deepseek-ocr" class="cta-button" target="_blank">
+                    🤗 Hugging Face Spacesで起動
+                </a>
+                <a href="https://github.com/suetaketakaya/DeepSeeKOCR_WEBAPP" class="cta-button secondary" target="_blank">
+                    📦 GitHubで見る
+                </a>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">📖</div>
+                    <h3>高精度OCR</h3>
+                    <p>DeepSeek-OCRモデルを使用した高精度な文字認識。手書き・印刷文字の両方に対応。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>Markdown変換</h3>
+                    <p>文書を構造化されたMarkdownフォーマットに自動変換。ブログやドキュメント作成に最適。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📦</div>
+                    <h3>バウンディングボックス</h3>
+                    <p>検出された文字領域を視覚的に表示。認識精度の確認が簡単。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🧮</div>
+                    <h3>数式・表の認識</h3>
+                    <p>複雑な数式や表の構造も正確に認識。学術論文やレポートの処理に対応。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3>CPU対応</h3>
+                    <p>GPUなしでも動作するように最適化。誰でも簡単にアクセス可能。</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🆓</div>
+                    <h3>完全無料</h3>
+                    <p>すべての機能を無料で利用可能。登録不要で今すぐ使えます。</p>
+                </div>
+            </div>
+
+            <div class="how-to-use">
+                <h2 style="color: #667eea; margin-bottom: 20px;">使い方</h2>
+                <ol>
+                    <li><strong>画像をアップロード</strong> - OCR処理したい画像をアップロード</li>
+                    <li><strong>処理タイプを選択</strong> - OCRまたはMarkdown変換を選択</li>
+                    <li><strong>クロップモードを設定</strong> - 必要に応じて画像のクロップ処理を有効化</li>
+                    <li><strong>処理実行</strong> - ボタンをクリックして処理を開始</li>
+                    <li><strong>結果を確認</strong> - テキスト結果とバウンディングボックス付き画像を確認</li>
+                </ol>
+            </div>
+
+            <!-- ミドル広告バナー -->
+            <div class="ad-banner">
+                <p style="opacity: 0.7;">広告スペース（AdSense承認後に表示されます）</p>
+            </div>
+
+            <div style="margin-top: 40px; padding: 30px; background: #e3f2fd; border-radius: 10px;">
+                <h3 style="color: #1976d2; margin-bottom: 15px;">🎓 技術詳細</h3>
+                <p>このアプリケーションは、DeepSeek社が提供する高性能なVision-Languageモデルをベースにしています。
+                   GPU環境を前提としたモデルをCPU環境で動作させるため、独自の型変換とモンキーパッチ技術を実装しています。</p>
+                <p style="margin-top: 10px;">
+                    詳細な実装については、<a href="https://github.com/suetaketakaya/DeepSeeKOCR_WEBAPP" style="color: #1976d2; font-weight: bold;" target="_blank">GitHubリポジトリ</a>をご覧ください。
+                </p>
+            </div>
+        </div>
+
+        <!-- ボトム広告バナー -->
+        <div class="ad-banner">
+            <p style="opacity: 0.7;">広告スペース（AdSense承認後に表示されます）</p>
+        </div>
+
+        <footer>
+            <p style="margin-bottom: 10px;">
+                <a href="https://github.com/suetaketakaya/DeepSeeKOCR_WEBAPP" class="github-link" target="_blank">
+                    GitHub Repository
+                </a>
+            </p>
+            <p style="opacity: 0.8;">© 2025 DeepSeek-OCR Webapp | Made with ❤️ by suetaketakaya</p>
+            <p style="opacity: 0.7; margin-top: 10px; font-size: 0.9em;">
+                Powered by <a href="https://huggingface.co/" style="color: white;" target="_blank">Hugging Face</a>
+                & <a href="https://firebase.google.com/" style="color: white;" target="_blank">Firebase</a>
+            </p>
+        </footer>
     </div>
-    <script>
-        // Cloud Runへのリダイレクト（firebase.jsonで自動的に行われます）
-        setTimeout(() => {
-            if (window.location.pathname === '/index.html' || window.location.pathname === '/') {
-                window.location.reload();
-            }
-        }, 2000);
-    </script>
 </body>
 </html>
