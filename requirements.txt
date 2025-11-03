@@ -1,5 +1,5 @@
 torch>=2.0.0
-transformers>=4.37.0
+transformers==4.40.0
 accelerate>=0.25.0
 sentencepiece>=0.1.99
 gradio>=4.0.0
@@ -8,6 +8,8 @@ Pillow>=10.0.0
 addict>=2.4.0
 matplotlib>=3.7.0
 torchvision>=0.15.0
+einops>=0.7.0
+timm>=0.9.0
 # Cloud Run/本番環境用
 gunicorn>=21.2.0
 # セキュリティとパフォーマンス
