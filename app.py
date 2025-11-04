@@ -1,4 +1,4 @@
-from transformers import AutoModel, AutoTokenizer, LlamaTokenizer
+from transformers import AutoModel, AutoTokenizer, LlamaTokenizer, BitsAndBytesConfig
 import torch
 import os
 import gradio as gr
@@ -98,11 +98,15 @@ if model_exists:
 
     if use_8bit:
         print("8bit量子化を有効化（メモリ使用量削減）")
+        quantization_config = BitsAndBytesConfig(
+            load_in_8bit=True,
+            bnb_8bit_compute_dtype=torch.float16
+        )
         model = AutoModel.from_pretrained(
             LOCAL_MODEL_DIR,
             trust_remote_code=True,
             use_safetensors=True,
-            load_in_8bit=True,
+            quantization_config=quantization_config,
             device_map="auto",
             attn_implementation='eager'  # FlashAttention2を無効化
         )
@@ -141,11 +145,15 @@ else:
 
     if use_8bit:
         print("8bit量子化を有効化（メモリ使用量削減）")
+        quantization_config = BitsAndBytesConfig(
+            load_in_8bit=True,
+            bnb_8bit_compute_dtype=torch.float16
+        )
         model = AutoModel.from_pretrained(
             model_name,
             trust_remote_code=True,
             use_safetensors=True,
-            load_in_8bit=True,
+            quantization_config=quantization_config,
             device_map="auto",
             attn_implementation='eager'  # FlashAttention2を無効化
         )
