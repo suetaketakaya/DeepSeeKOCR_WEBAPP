@@ -10,19 +10,19 @@ pinned: false
 license: apache-2.0
 ---
 
-# 🚀 DeepSeek-OCR Webapp
+# 🚀 TrOCR Webapp
 
-高精度な光学文字認識（OCR）とMarkdown変換を提供する無料Webアプリケーション
+Microsoft TrOCRを使用した高精度な光学文字認識（OCR）Webアプリケーション
 
 ## ✨ 特徴
 
 | 機能 | 説明 |
 |------|------|
-| 📖 **高精度OCR** | DeepSeek-OCRモデルによる高精度な文字認識 |
-| 📄 **Markdown変換** | 文書を構造化されたMarkdownに自動変換 |
-| 📦 **バウンディングボックス** | 検出された文字領域を視覚的に表示 |
-| 🧮 **数式・表の認識** | 複雑な数式や表の構造も正確に認識 |
-| 💻 **CPU対応** | GPUなしでも動作する最適化実装 |
+| 📖 **高精度OCR** | Microsoft TrOCRによる高精度な文字認識 |
+| ⚡ **軽量・高速** | 1.4GBの軽量モデルで高速処理 |
+| 💻 **CPU/GPU対応** | 環境に応じて自動的に最適化 |
+| 🌐 **Web UI** | Gradioによる使いやすいインターフェース |
+| 📱 **レスポンシブ** | モバイルデバイスでも快適に利用可能 |
 | 🆓 **完全無料** | 全機能を無料で利用可能 |
 
 ## 🎯 使い方
@@ -30,47 +30,45 @@ license: apache-2.0
 ### ステップ1: 画像をアップロード
 OCR処理したい画像をドラッグ&ドロップまたはクリックしてアップロード
 
-### ステップ2: 処理タイプを選択
-- **OCR**: 画像からテキストを抽出
-- **Markdown**: 文書をMarkdown形式に変換
+### ステップ2: テキスト抽出
+「テキスト抽出」ボタンをクリックして処理を開始
 
-### ステップ3: クロップモードを設定
-画像の前処理を有効化して認識精度を向上（オプション）
-
-### ステップ4: 処理実行
-「処理実行」ボタンをクリックして処理を開始
-
-### ステップ5: 結果を確認
-- テキスト結果が左側に表示されます
-- バウンディングボックス付き画像が右側に表示されます
+### ステップ3: 結果を確認
+抽出されたテキストが右側に表示されます
 
 ## 🔧 技術詳細
 
-このアプリケーションは、DeepSeek社が提供する高性能なVision-Languageモデルをベースにしています。
+このアプリケーションは、Microsoft Researchが開発したTrOCR（Transformer-based OCR）モデルを使用しています。
 
-### CPU環境での動作
+### 主な技術スタック
 
-GPU環境を前提としたモデルをCPU環境で動作させるため、以下の技術を実装：
+- **モデル**: microsoft/trocr-large-printed (1.4GB)
+- **フレームワーク**: Hugging Face Transformers
+- **UI**: Gradio 4.0+
+- **画像処理**: Pillow
 
-- **型変換**: BFloat16 → Float32への自動変換
-- **モンキーパッチ**: torch.cuda()などのGPU呼び出しをCPU互換に変換
-- **Embedding層の保護**: 整数型テンソルを保護しながら浮動小数点型のみ変換
+### メモリ使用量
+
+- **モデルサイズ**: 約1.4GB
+- **推論時メモリ**: 約4-6GB
+- **Hugging Face Spaces無料プラン**: ✅ 問題なく動作
 
 ## 📊 処理時間の目安
 
-| 画像サイズ | 処理時間（CPU） |
-|-----------|----------------|
-| 小（<1MB） | 30秒〜1分 |
-| 中（1-3MB） | 1〜2分 |
-| 大（>3MB） | 2〜5分 |
+| 画像サイズ | 処理時間（CPU） | 処理時間（GPU） |
+|-----------|----------------|----------------|
+| 小（<1MB） | 3-5秒 | 1-2秒 |
+| 中（1-3MB） | 5-10秒 | 2-3秒 |
+| 大（>3MB） | 10-20秒 | 3-5秒 |
 
-※初回起動時はモデルのダウンロードに時間がかかります（5-10分程度）
+※初回起動時はモデルのダウンロードに時間がかかります（2-3分程度）
 
 ## 🔗 リンク
 
 - **GitHub リポジトリ**: [DeepSeeKOCR_WEBAPP](https://github.com/suetaketakaya/DeepSeeKOCR_WEBAPP)
 - **Firebase ランディングページ**: [deepseekocr-9a570.web.app](https://deepseekocr-9a570.web.app)
-- **元モデル**: [DeepSeek-OCR](https://huggingface.co/deepseek-ai/DeepSeek-OCR)
+- **Hugging Face Space**: [deepseekocr_forwebapp](https://huggingface.co/spaces/Takaya1029/deepseekocr_forwebapp)
+- **モデル**: [Microsoft TrOCR](https://huggingface.co/microsoft/trocr-large-printed)
 
 ## 📝 ライセンス
 
@@ -82,6 +80,7 @@ Created by [suetaketakaya](https://github.com/suetaketakaya)
 
 ## 🙏 謝辞
 
-- DeepSeek社のDeepSeek-OCRモデル
+- Microsoft ResearchのTrOCRモデル
 - Hugging Face Spacesの無料ホスティング
 - Gradioフレームワーク
+- Firebase Hosting
