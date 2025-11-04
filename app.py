@@ -93,13 +93,27 @@ if model_exists:
         except Exception as e2:
             print(f"LlamaTokenizer でもエラー発生: {type(e2).__name__}: {e2}")
             raise
-    model = AutoModel.from_pretrained(
-        LOCAL_MODEL_DIR,
-        trust_remote_code=True,
-        use_safetensors=True,
-        torch_dtype=torch.float32 if not torch.cuda.is_available() else torch.bfloat16,
-        attn_implementation='eager'  # FlashAttention2を無効化（CPU環境でも動作）
-    )
+    # メモリ制約のある環境では8bit量子化を使用
+    use_8bit = os.environ.get("USE_8BIT_QUANTIZATION", "true").lower() == "true"
+
+    if use_8bit:
+        print("8bit量子化を有効化（メモリ使用量削減）")
+        model = AutoModel.from_pretrained(
+            LOCAL_MODEL_DIR,
+            trust_remote_code=True,
+            use_safetensors=True,
+            load_in_8bit=True,
+            device_map="auto",
+            attn_implementation='eager'  # FlashAttention2を無効化
+        )
+    else:
+        model = AutoModel.from_pretrained(
+            LOCAL_MODEL_DIR,
+            trust_remote_code=True,
+            use_safetensors=True,
+            torch_dtype=torch.float32 if not torch.cuda.is_available() else torch.bfloat16,
+            attn_implementation='eager'  # FlashAttention2を無効化（CPU環境でも動作）
+        )
 else:
     print(f"Hugging Faceからモデルをダウンロードしています: {model_name}")
     try:
@@ -122,27 +136,52 @@ else:
         except Exception as e2:
             print(f"LlamaTokenizer でもエラー発生: {type(e2).__name__}: {e2}")
             raise
-    model = AutoModel.from_pretrained(
-        model_name,
-        trust_remote_code=True,
-        use_safetensors=True,
-        torch_dtype=torch.float32 if not torch.cuda.is_available() else torch.bfloat16,
-        attn_implementation='eager'  # FlashAttention2を無効化（CPU環境でも動作）
-    )
+    # メモリ制約のある環境では8bit量子化を使用
+    use_8bit = os.environ.get("USE_8BIT_QUANTIZATION", "true").lower() == "true"
+
+    if use_8bit:
+        print("8bit量子化を有効化（メモリ使用量削減）")
+        model = AutoModel.from_pretrained(
+            model_name,
+            trust_remote_code=True,
+            use_safetensors=True,
+            load_in_8bit=True,
+            device_map="auto",
+            attn_implementation='eager'  # FlashAttention2を無効化
+        )
+    else:
+        model = AutoModel.from_pretrained(
+            model_name,
+            trust_remote_code=True,
+            use_safetensors=True,
+            torch_dtype=torch.float32 if not torch.cuda.is_available() else torch.bfloat16,
+            attn_implementation='eager'  # FlashAttention2を無効化（CPU環境でも動作）
+        )
     
     print("モデルをローカルに保存しています...")
     os.makedirs(LOCAL_MODEL_DIR, exist_ok=True)
     tokenizer.save_pretrained(LOCAL_MODEL_DIR)
-    # CPU環境ではfloat32で保存
-    if not torch.cuda.is_available():
-        model = model.to(torch.float32)
-        for param in model.parameters():
-            if param.dtype != torch.float32:
-                param.data = param.data.to(torch.float32)
-    model.save_pretrained(LOCAL_MODEL_DIR, safe_serialization=True)
+    # 8bit量子化モデルは保存をスキップ（再量子化が必要なため）
+    if not use_8bit:
+        # CPU環境ではfloat32で保存
+        if not torch.cuda.is_available():
+            model = model.to(torch.float32)
+            for param in model.parameters():
+                if param.dtype != torch.float32:
+                    param.data = param.data.to(torch.float32)
+        model.save_pretrained(LOCAL_MODEL_DIR, safe_serialization=True)
+    else:
+        print("8bit量子化モデルはローカル保存をスキップします")
 
 # モデルを準備
-if torch.cuda.is_available():
+use_8bit = os.environ.get("USE_8BIT_QUANTIZATION", "true").lower() == "true"
+
+if use_8bit:
+    # 8bit量子化モデルは既にdevice_mapで配置済み
+    model = model.eval()
+    device_info = "GPU/CPU (8bit量子化)"
+    print(f"モデル読み込み完了 (デバイス: {device_info})")
+elif torch.cuda.is_available():
     try:
         model = model.eval().cuda().to(torch.bfloat16)
         device_info = "GPU"
