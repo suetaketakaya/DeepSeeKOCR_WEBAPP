@@ -1,44 +1,96 @@
-from transformers import TrOCRProcessor, VisionEncoderDecoderModel
+from transformers import Qwen3VLForConditionalGeneration, AutoProcessor
 from PIL import Image
 import torch
 import os
 import gradio as gr
+import io
 
-print("TrOCRモデルを読み込んでいます...")
+print("Qwen3-VL-2Bモデルを読み込んでいます...")
 
 # モデルとプロセッサーの読み込み
-model_name = "microsoft/trocr-large-printed"
-processor = TrOCRProcessor.from_pretrained(model_name)
-model = VisionEncoderDecoderModel.from_pretrained(model_name)
+model_name = "Qwen/Qwen3-VL-2B-Instruct"
+processor = AutoProcessor.from_pretrained(model_name)
+model = Qwen3VLForConditionalGeneration.from_pretrained(
+    model_name,
+    torch_dtype=torch.bfloat16 if torch.cuda.is_available() else torch.float32,
+    device_map="auto"
+)
 
-# デバイス設定
+# デバイス確認
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model.to(device)
-model.eval()
-
 print(f"モデル読み込み完了 (デバイス: {device})")
-print(f"モデルサイズ: {model_name}")
+print(f"モデル: {model_name}")
 
 def process_image_ocr(image):
     """
-    TrOCRを使用して画像からテキストを抽出
+    Qwen3-VLを使用して画像からテキストを抽出
     """
     if image is None:
         return "エラー: 画像がアップロードされていません"
 
     try:
-        # PIL Imageをそのまま使用（Gradioから受け取る）
-        pixel_values = processor(images=image, return_tensors="pt").pixel_values
-        pixel_values = pixel_values.to(device)
+        # PIL Imageを一時ファイルとして保存してパスを取得
+        # （Qwen3-VLはファイルパスまたはURLを受け取る）
+        temp_path = "/tmp/temp_ocr_image.png"
+        image.save(temp_path)
+
+        # OCR用のメッセージを構築
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image",
+                        "image": temp_path,
+                    },
+                    {
+                        "type": "text",
+                        "text": "この画像に含まれるすべてのテキストを正確に抽出してください。テキストのみを出力し、説明は不要です。"
+                    },
+                ],
+            }
+        ]
+
+        # プロンプトを準備
+        text_prompt = processor.apply_chat_template(
+            messages,
+            tokenize=False,
+            add_generation_prompt=True
+        )
+
+        # 画像とテキストを処理
+        inputs = processor(
+            text=[text_prompt],
+            images=[Image.open(temp_path)],
+            padding=True,
+            return_tensors="pt"
+        )
+        inputs = inputs.to(model.device)
 
         # 推論実行
         with torch.no_grad():
-            generated_ids = model.generate(pixel_values)
+            generated_ids = model.generate(
+                **inputs,
+                max_new_tokens=512,
+                do_sample=False
+            )
 
-        # デコード
-        generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        # 入力部分を除去してデコード
+        generated_ids_trimmed = [
+            out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
+        ]
 
-        return generated_text
+        output_text = processor.batch_decode(
+            generated_ids_trimmed,
+            skip_special_tokens=True,
+            clean_up_tokenization_spaces=False
+        )[0]
+
+        # 一時ファイルを削除
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+        return output_text.strip()
 
     except Exception as e:
         import traceback
@@ -95,17 +147,17 @@ def get_adsense_script():
     return ""
 
 # Gradioインターフェースの作成
-with gr.Blocks(title="TrOCR - Text Recognition Tool", head=get_adsense_script()) as demo:
+with gr.Blocks(title="Qwen3-VL OCR - Text Recognition Tool", head=get_adsense_script()) as demo:
     # トップバナー広告
     if get_adsense_top():
         gr.HTML(get_adsense_top())
 
     gr.Markdown(
         """
-        # TrOCR - テキスト認識ツール
+        # Qwen3-VL OCR - 高精度テキスト認識ツール
 
-        Microsoft TrOCRを使用した高精度な光学文字認識（OCR）ツールです。
-        画像をアップロードして、テキストを抽出できます。
+        Qwen3-VL-2Bを使用した最新の光学文字認識（OCR）ツールです。
+        32言語対応、低照度・傾き・ぼかしにも強い高精度なテキスト抽出が可能です。
         """
     )
 
@@ -135,13 +187,13 @@ with gr.Blocks(title="TrOCR - Text Recognition Tool", head=get_adsense_script())
         3. 抽出されたテキストが表示されます
 
         ### 対応言語
-        - 英語（印刷文字）
-        - その他のラテン文字系言語
+        - 日本語、英語、中国語など32言語に対応
+        - 低照度・ぼかし・傾きがある画像でも高精度
 
-        ### 注意事項
-        - 手書き文字の認識精度は印刷文字より低くなります
-        - 画像は明瞭で、テキストが読みやすいものを使用してください
-        - 複数行のテキストも認識可能です
+        ### 特徴
+        - 稀な文字・専門用語にも対応
+        - 長文書の構造解析が可能
+        - 印刷文字・手書き文字両方に対応
         """
     )
 
