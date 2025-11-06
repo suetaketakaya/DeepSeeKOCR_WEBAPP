@@ -79,21 +79,20 @@
 
         /* メインコンテンツ */
         .main-container {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 20px;
+            margin: 0;
+            padding: 0;
         }
 
         /* OCRアプリエリア */
         .app-container {
             background: #ffffff;
             overflow: hidden;
-            margin-bottom: 40px;
+            margin-bottom: 0;
         }
 
         .app-iframe {
             width: 100%;
-            height: 650px;
+            height: calc(100vh - 60px);
             border: none;
             display: block;
         }
@@ -143,7 +142,7 @@
         /* モバイル対応 */
         @media (max-width: 768px) {
             .app-iframe {
-                height: 500px;
+                height: calc(100vh - 60px);
             }
         }
     </style>
