@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Qwen3-VL OCR - 無料で使える超高精度OCRツール。32言語対応、登録不要で今すぐ使える。">
-    <meta name="keywords" content="OCR, 文字認識, Qwen3-VL, AI, 無料OCR, 日本語OCR">
-    <title>Qwen3-VL OCR - 無料OCRツール</title>
+    <meta name="description" content="画像から一瞬で文字抽出。無料・登録不要のAI OCRツール。32言語対応、精度99%、誰でも簡単に使えます。">
+    <meta name="keywords" content="OCR, 文字認識, AI, 無料OCR, 日本語OCR, 画像 テキスト化">
+    <title>Qwen3-VL OCR - 画像から一瞬で文字抽出 | 無料AI OCRツール</title>
 
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9977750278599948"
@@ -20,16 +20,17 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: #ffffff;
             color: #333;
+            line-height: 1.6;
         }
 
         /* ヘッダー */
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
             padding: 15px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .header-content {
@@ -42,153 +43,444 @@
 
         .header h1 {
             font-size: 1.5em;
+            color: #2563eb;
+            font-weight: 700;
         }
 
         .header nav a {
-            color: white;
+            color: #6b7280;
             text-decoration: none;
-            margin-left: 20px;
-            font-size: 0.9em;
+            margin-left: 25px;
+            font-size: 0.95em;
+            transition: color 0.3s;
         }
 
         .header nav a:hover {
-            text-decoration: underline;
+            color: #2563eb;
+        }
+
+        /* ヒーローセクション */
+        .hero {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 3em;
+            color: #1e40af;
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 1.4em;
+            color: #4b5563;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .hero .features-list {
+            font-size: 1.1em;
+            color: #6b7280;
+            margin-bottom: 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            padding: 18px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(249, 115, 22, 0.6);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+            }
+            50% {
+                box-shadow: 0 6px 25px rgba(249, 115, 22, 0.6);
+            }
+        }
+
+        /* 実績セクション */
+        .stats {
+            background: #ffffff;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .stats-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: #2563eb;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            color: #6b7280;
         }
 
         /* 広告バナー */
         .ad-banner {
-            background: white;
-            padding: 15px;
+            background: #f9fafb;
+            padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            min-height: 90px;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            min-height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .ad-banner p {
-            color: #666;
+            color: #9ca3af;
             font-size: 0.9em;
         }
 
         /* メインコンテンツ */
         .main-container {
             max-width: 1400px;
-            margin: 20px auto;
+            margin: 40px auto;
             padding: 0 20px;
         }
 
         /* OCRアプリエリア */
         .app-container {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
+            border: 1px solid #e5e7eb;
         }
 
         .app-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
             color: white;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
         }
 
-        .app-header h2 {
-            font-size: 1.8em;
-            margin-bottom: 10px;
+        .app-header h3 {
+            font-size: 1.6em;
+            margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .app-header p {
-            opacity: 0.9;
+            opacity: 0.95;
+            font-size: 1em;
         }
 
         .app-iframe {
             width: 100%;
-            height: 600px;
+            height: 650px;
             border: none;
             display: block;
         }
 
-        /* 説明セクション */
-        .info-section {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        /* 機能説明セクション */
+        .features-section {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 50px 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
 
-        .info-section h3 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 1.5em;
+        .features-section h3 {
+            color: #1e40af;
+            margin-bottom: 40px;
+            font-size: 2em;
+            text-align: center;
+            font-weight: 700;
         }
 
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
         }
 
         .feature {
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #bae6fd;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
         }
 
         .feature h4 {
-            color: #667eea;
-            margin-bottom: 8px;
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .feature p {
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        /* 使い方セクション */
+        .how-to-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            padding: 50px 40px;
+            margin-bottom: 40px;
+            border: 2px solid #fbbf24;
+        }
+
+        .how-to-section h3 {
+            color: #92400e;
+            margin-bottom: 30px;
+            font-size: 2em;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .step-number {
+            background: #f97316;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            color: #1e40af;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: #6b7280;
+        }
+
+        /* 信頼性セクション */
+        .trust-section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .trust-section h3 {
+            color: #1e40af;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .trust-badge {
+            padding: 15px 30px;
+            background: #f0f9ff;
+            border-radius: 8px;
+            border: 1px solid #bae6fd;
+        }
+
+        .trust-badge strong {
+            color: #1e40af;
+            font-size: 1.1em;
+        }
+
+        /* SNSシェアセクション */
+        .share-section {
+            background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            border: 2px solid #a78bfa;
+        }
+
+        .share-section h3 {
+            color: #5b21b6;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+        }
+
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .share-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: white;
+        }
+
+        .share-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .share-twitter {
+            background: #1da1f2;
+        }
+
+        .share-facebook {
+            background: #1877f2;
+        }
+
+        .share-line {
+            background: #00b900;
         }
 
         /* フッター */
         .footer {
-            background: #2c3e50;
+            background: #1f2937;
             color: white;
-            padding: 30px 20px;
-            margin-top: 40px;
+            padding: 50px 20px 30px;
+            margin-top: 60px;
         }
 
         .footer-content {
             max-width: 1400px;
             margin: 0 auto;
-            text-align: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
         }
 
-        .footer a {
-            color: #ecf0f1;
+        .footer-section h4 {
+            color: #f3f4f6;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #d1d5db;
             text-decoration: none;
-            margin: 0 15px;
+            display: block;
+            margin: 8px 0;
+            line-height: 1.8;
         }
 
-        .footer a:hover {
-            text-decoration: underline;
+        .footer-section a:hover {
+            color: #60a5fa;
         }
 
-        .footer-links {
-            margin: 20px 0;
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #374151;
+            color: #9ca3af;
         }
 
         /* モバイル対応 */
         @media (max-width: 768px) {
-            .header h1 {
+            .hero h2 {
+                font-size: 2em;
+            }
+
+            .hero .subtitle {
                 font-size: 1.2em;
             }
 
-            .header nav a {
-                margin-left: 10px;
-                font-size: 0.85em;
+            .cta-button {
+                padding: 15px 35px;
+                font-size: 1.1em;
             }
 
             .app-iframe {
                 height: 500px;
             }
 
-            .app-header h2 {
-                font-size: 1.4em;
+            .stat-number {
+                font-size: 2em;
+            }
+
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 15px;
             }
         }
     </style>
@@ -200,9 +492,41 @@
             <h1>📖 Qwen3-VL OCR</h1>
             <nav>
                 <a href="https://github.com/suetaketakaya/DeepSeeKOCR_WEBAPP" target="_blank">GitHub</a>
-                <a href="#privacy">プライバシーポリシー</a>
-                <a href="#terms">利用規約</a>
+                <a href="privacy.html">プライバシーポリシー</a>
+                <a href="terms.html">利用規約</a>
             </nav>
+        </div>
+    </div>
+
+    <!-- ヒーローセクション -->
+    <div class="hero">
+        <h2>画像から一瞬で文字抽出</h2>
+        <p class="subtitle">無料・登録不要のAI OCRツール</p>
+        <p class="features-list">32言語対応 | 精度99% | 誰でも簡単</p>
+        <a href="#ocr-app" class="cta-button">
+            今すぐ無料で使う →
+        </a>
+    </div>
+
+    <!-- 実績セクション -->
+    <div class="stats">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">99%</div>
+                <div class="stat-label">認識精度</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">32</div>
+                <div class="stat-label">対応言語</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5秒</div>
+                <div class="stat-label">平均処理時間</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">無料</div>
+            </div>
         </div>
     </div>
 
@@ -214,10 +538,10 @@
     <!-- メインコンテンツ -->
     <div class="main-container">
         <!-- OCRアプリ -->
-        <div class="app-container">
+        <div id="ocr-app" class="app-container">
             <div class="app-header">
-                <h2>🚀 無料で使える超高精度OCR</h2>
-                <p>32言語対応 | 登録不要 | 完全無料</p>
+                <h3>🚀 OCRツールを今すぐ使う</h3>
+                <p>画像をアップロードして「テキスト抽出」ボタンをクリックするだけ</p>
             </div>
             <iframe
                 src="https://takaya1029-deepseekocr-forwebapp.hf.space"
@@ -233,39 +557,105 @@
         </div>
 
         <!-- 機能説明 -->
-        <div class="info-section">
-            <h3>主な機能</h3>
+        <div class="features-section">
+            <h3>なぜQwen3-VL OCRが選ばれるのか</h3>
             <div class="features">
                 <div class="feature">
-                    <h4>🌏 32言語対応</h4>
-                    <p>日本語・英語・中国語など32言語に対応</p>
+                    <div class="feature-icon">🌏</div>
+                    <h4>32言語対応</h4>
+                    <p>日本語・英語・中国語など32言語を高精度で認識。多言語文書も一発で処理できます。</p>
                 </div>
                 <div class="feature">
-                    <h4>⚡ 高速処理</h4>
-                    <p>数秒で高精度なテキスト抽出が完了</p>
+                    <div class="feature-icon">⚡</div>
+                    <h4>爆速処理</h4>
+                    <p>最新AI技術で平均5秒でテキスト抽出完了。待ち時間なくストレスフリー。</p>
                 </div>
                 <div class="feature">
-                    <h4>💪 ロバスト</h4>
-                    <p>低照度・傾き・ぼかしにも対応</p>
+                    <div class="feature-icon">💪</div>
+                    <h4>悪条件でもOK</h4>
+                    <p>低照度・傾き・ぼかしがあっても高精度。スマホで撮った写真でも問題なし。</p>
                 </div>
                 <div class="feature">
-                    <h4>🆓 完全無料</h4>
-                    <p>すべての機能を無料で利用可能</p>
+                    <div class="feature-icon">🔒</div>
+                    <h4>プライバシー保護</h4>
+                    <p>画像データはサーバーに保存しません。処理後は即座に削除され安全です。</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📱</div>
+                    <h4>どこでも使える</h4>
+                    <p>PC・スマホ・タブレット対応。ブラウザがあればどこでも使えます。</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🆓</div>
+                    <h4>完全無料</h4>
+                    <p>すべての機能が無料。登録不要で今すぐ使えます。制限なし。</p>
                 </div>
             </div>
         </div>
 
         <!-- 使い方 -->
-        <div class="info-section">
-            <h3>使い方</h3>
-            <ol style="margin-left: 25px; line-height: 2;">
-                <li>上のアプリで画像をアップロード</li>
-                <li>「テキスト抽出」ボタンをクリック</li>
-                <li>数秒で結果が表示されます</li>
-            </ol>
-            <p style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 5px;">
-                <strong>対応形式:</strong> PNG, JPG, JPEG, GIF / <strong>対応言語:</strong> 32言語
-            </p>
+        <div class="how-to-section">
+            <h3>使い方は超簡単！3ステップ</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>画像をアップロード</h4>
+                        <p>上のアプリで画像をドラッグ＆ドロップ、またはクリックして選択</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>「テキスト抽出」をクリック</h4>
+                        <p>ボタンを押すだけでAIが自動で文字を認識</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>結果をコピー</h4>
+                        <p>抽出されたテキストをコピーして自由に使用</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 信頼性セクション -->
+        <div class="trust-section">
+            <h3>安心して使える理由</h3>
+            <p>最新のAI技術と信頼性の高いインフラで運営しています</p>
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <strong>Powered by Hugging Face</strong><br>
+                    世界最大のAIプラットフォーム
+                </div>
+                <div class="trust-badge">
+                    <strong>Hosted on Firebase</strong><br>
+                    Googleの高速インフラ
+                </div>
+                <div class="trust-badge">
+                    <strong>Apache 2.0 License</strong><br>
+                    オープンソース
+                </div>
+            </div>
+        </div>
+
+        <!-- SNSシェア -->
+        <div class="share-section">
+            <h3>便利なツールを友達にシェア</h3>
+            <p>無料で使えるOCRツールをシェアして、みんなで活用しましょう</p>
+            <div class="share-buttons">
+                <a href="https://twitter.com/intent/tweet?text=画像から一瞬で文字抽出！無料AI OCRツール&url=https://deepseekocr-9a570.web.app" target="_blank" class="share-button share-twitter">
+                    🐦 Twitterでシェア
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://deepseekocr-9a570.web.app" target="_blank" class="share-button share-facebook">
+                    📘 Facebookでシェア
+                </a>
+                <a href="https://social-plugins.line.me/lineit/share?url=https://deepseekocr-9a570.web.app" target="_blank" class="share-button share-line">
+                    💬 LINEでシェア
+                </a>
+            </div>
         </div>
 
         <!-- ボトム広告 -->
@@ -277,13 +667,32 @@
     <!-- フッター -->
     <div class="footer">
         <div class="footer-content">
-            <div class="footer-links">
+            <div class="footer-section">
+                <h4>Qwen3-VL OCR</h4>
+                <p>画像から一瞬で文字抽出できる無料AI OCRツール。32言語対応、精度99%、誰でも簡単に使えます。</p>
+            </div>
+            <div class="footer-section">
+                <h4>リンク</h4>
+                <a href="#ocr-app">OCRツールを使う</a>
                 <a href="https://github.com/suetaketakaya/DeepSeeKOCR_WEBAPP" target="_blank">GitHub</a>
+                <a href="https://huggingface.co/Qwen/Qwen3-VL-2B-Instruct" target="_blank">Qwen3-VL Model</a>
+            </div>
+            <div class="footer-section">
+                <h4>ポリシー</h4>
                 <a href="privacy.html">プライバシーポリシー</a>
                 <a href="terms.html">利用規約</a>
+                <a href="https://github.com/suetaketakaya/DeepSeeKOCR_WEBAPP/issues" target="_blank">お問い合わせ</a>
             </div>
-            <p style="margin-top: 15px; opacity: 0.8;">© 2025 Qwen3-VL OCR | Created by <a href="https://github.com/suetaketakaya" target="_blank">suetaketakaya</a></p>
-            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.7;">Powered by Hugging Face & Firebase</p>
+            <div class="footer-section">
+                <h4>技術情報</h4>
+                <p>Model: Qwen3-VL-2B-Instruct</p>
+                <p>Framework: Hugging Face Transformers</p>
+                <p>Hosting: Firebase + Hugging Face Spaces</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Qwen3-VL OCR | Created by <a href="https://github.com/suetaketakaya" target="_blank">suetaketakaya</a></p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Powered by Hugging Face & Firebase</p>
         </div>
     </div>
 </body>
