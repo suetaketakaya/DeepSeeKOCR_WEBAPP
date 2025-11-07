@@ -98,6 +98,9 @@ def process_image_ocr(image):
         print(error_msg)
         return error_msg
 
+# Google Analytics設定（環境変数から取得）
+GA_MEASUREMENT_ID = os.environ.get("GA_MEASUREMENT_ID", "G-01HQFFXE17")
+
 # Google AdSense設定（環境変数から取得）
 ADSENSE_CLIENT_ID = os.environ.get("ADSENSE_CLIENT_ID", "")
 ADSENSE_SLOT_TOP = os.environ.get("ADSENSE_SLOT_TOP", "")
@@ -138,6 +141,76 @@ def get_adsense_bottom():
         """
     return ""
 
+def get_favicon():
+    """ファビコン設定"""
+    # SVGをdata URIとして埋め込み
+    favicon_svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><rect width="64" height="64" fill="%232563eb" rx="8"/><rect x="14" y="12" width="36" height="40" fill="white" rx="2"/><rect x="18" y="18" width="20" height="3" fill="%232563eb" rx="1"/><rect x="18" y="24" width="28" height="3" fill="%232563eb" rx="1"/><rect x="18" y="30" width="24" height="3" fill="%232563eb" rx="1"/><rect x="18" y="36" width="26" height="3" fill="%232563eb" rx="1"/><line x1="12" y1="28" x2="52" y2="28" stroke="%2360a5fa" stroke-width="2" opacity="0.7"/><circle cx="48" cy="44" r="6" fill="none" stroke="%2310b981" stroke-width="2.5"/><line x1="52" y1="48" x2="56" y2="52" stroke="%2310b981" stroke-width="2.5" stroke-linecap="round"/></svg>'''
+
+    return f'''
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,{favicon_svg}">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,{favicon_svg}">
+    '''
+
+def get_seo_meta_tags():
+    """SEO最適化用メタタグ"""
+    site_url = "https://deepseekocr-9a570.web.app"
+    return f"""
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="無料のAI OCRツール。Qwen3-VL技術で画像から高精度にテキストを抽出。32言語対応、日本語・英語・中国語など多言語の文字認識が可能。オンラインで簡単にテキスト変換。">
+    <meta name="keywords" content="OCR,画像からテキスト抽出,文字認識,無料OCRツール,AI文字認識,オンラインOCR,日本語OCR,画像テキスト化,Qwen3-VL,テキスト抽出ツール">
+    <meta name="author" content="Qwen3-VL OCR">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Japanese">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{site_url}">
+    <meta property="og:title" content="無料OCRツール - 画像からテキスト抽出 | AI文字認識">
+    <meta property="og:description" content="Qwen3-VL技術で画像から高精度にテキストを抽出。32言語対応の無料オンラインOCRツール。">
+    <meta property="og:image" content="{site_url}/favicon.svg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{site_url}">
+    <meta property="twitter:title" content="無料OCRツール - 画像からテキスト抽出 | AI文字認識">
+    <meta property="twitter:description" content="Qwen3-VL技術で画像から高精度にテキストを抽出。32言語対応の無料オンラインOCRツール。">
+    <meta property="twitter:image" content="{site_url}/favicon.svg">
+
+    <!-- JSON-LD 構造化データ -->
+    <script type="application/ld+json">
+    {{
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Qwen3-VL OCR - 画像からテキスト抽出",
+      "description": "無料のAI OCRツール。画像から高精度にテキストを抽出。32言語対応。",
+      "url": "{site_url}",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "offers": {{
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      }},
+      "featureList": "OCR, 画像文字認識, 多言語対応, AI技術, 無料"
+    }}
+    </script>
+    """
+
+def get_analytics_script():
+    """Google Analyticsトラッキングコード"""
+    if GA_MEASUREMENT_ID:
+        return f"""
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){{dataLayer.push(arguments);}}
+          gtag('js', new Date());
+          gtag('config', '{GA_MEASUREMENT_ID}');
+        </script>
+        """
+    return ""
+
 def get_adsense_script():
     if ADSENSE_CLIENT_ID:
         return f"""
@@ -146,8 +219,15 @@ def get_adsense_script():
         """
     return ""
 
+def get_head_scripts():
+    """すべてのヘッダースクリプトとメタタグを結合"""
+    return get_favicon() + get_seo_meta_tags() + get_analytics_script() + get_adsense_script()
+
 # Gradioインターフェースの作成
-with gr.Blocks(title="Qwen3-VL OCR - Text Recognition Tool", head=get_adsense_script()) as demo:
+with gr.Blocks(
+    title="無料OCRツール - 画像からテキスト抽出 | AI文字認識 Qwen3-VL",
+    head=get_head_scripts()
+) as demo:
     # トップバナー広告
     if get_adsense_top():
         gr.HTML(get_adsense_top())
